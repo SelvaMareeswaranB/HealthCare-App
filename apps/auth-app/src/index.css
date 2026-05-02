@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@repo/theme/theme.css";
+
+@source "../../../packages/*/src/**/*.{ts,tsx}"; 
+
+@source "../../packages/ui/**/*.{js,ts,jsx,tsx}";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--color-app-bg);
+  color: var(--color-app-text);
+}

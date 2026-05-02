@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@repo/theme/theme.css";
+
+*{
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--color-app-bg);
+  color: var(--color-app-text);
+}

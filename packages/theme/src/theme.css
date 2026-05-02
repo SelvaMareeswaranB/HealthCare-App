@@ -1,0 +1,15 @@
+@theme {
+  --color-app-bg: #0b1120;
+  --color-app-surface: #111827;
+  --color-app-surface-2: #1f2937;
+  --color-app-text: #e5e7eb;
+  --color-app-text-muted: #9ca3af;
+  --color-app-border: #374151;
+  --color-app-primary: #60a5fa;
+  --color-app-danger: #ef4444;
+  --color-app-danger-hover: #dc2626;
+}
+
+:root {
+  color-scheme: dark;
+}
