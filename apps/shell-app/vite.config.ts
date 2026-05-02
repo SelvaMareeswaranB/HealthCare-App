@@ -13,10 +13,10 @@ export default defineConfig(({ mode }) => {
       federation({
         name: "shell-app",
         remotes: {
-          authRemote: env.VITE_AUTH_REMOTE_URL || "http://localhost:5174/assets/remoteEntry.js",
-          patientRemote: env.VITE_PATIENT_REMOTE_URL || "http://localhost:5176/assets/remoteEntry.js",
-          dashboardRemote: env.VITE_DASHBOARD_REMOTE_URL || "http://localhost:5175/assets/remoteEntry.js",
-          analyticsRemote: env.VITE_ANALYTICS_REMOTE_URL || "http://localhost:5177/assets/remoteEntry.js",
+          authRemote: env.VITE_AUTH_REMOTE_URL,
+          patientRemote: env.VITE_PATIENT_REMOTE_URL,
+          dashboardRemote: env.VITE_DASHBOARD_REMOTE_URL,
+          analyticsRemote: env.VITE_ANALYTICS_REMOTE_URL,
         },
         shared: {
           react: {

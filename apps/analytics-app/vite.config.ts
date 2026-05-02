@@ -18,13 +18,11 @@ export default defineConfig({
           singleton: true,
           requiredVersion: '^19.2.5',
           eager: true,
-          import: false,
         },
         'react-dom': {
           singleton: true,
           requiredVersion: '^19.2.5',
           eager: true,
-          import: false,
         },
       } as any,
     }),
