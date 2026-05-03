@@ -1,4 +1,5 @@
-import PatientModule from "./features/PatientDetails/Pages/PatientModule"
+import "./index.css";
+import PatientModule from "./features/PatientDetails/Pages/PatientModule";
 
 const App = () => {
   return (

@@ -1,4 +1,5 @@
-import AnalyticsPage from "./features/analytics/pages/AnalyticsPage"
+import "./index.css";
+import AnalyticsPage from "./features/analytics/pages/AnalyticsPage";
 
 
 function App() {
