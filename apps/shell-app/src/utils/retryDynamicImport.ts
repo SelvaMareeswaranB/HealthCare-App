@@ -6,8 +6,8 @@ export async function retryDynamicImport<T>(
   loader: () => Promise<T>,
   options?: { retries?: number; baseDelayMs?: number }
 ): Promise<T> {
-  const retries = options?.retries ?? 3;
-  const baseDelayMs = options?.baseDelayMs ?? 200;
+  const retries = options?.retries ?? 5;
+  const baseDelayMs = options?.baseDelayMs ?? 300;
   let last: unknown;
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {

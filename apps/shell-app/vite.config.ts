@@ -3,39 +3,57 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import federation from "@originjs/vite-plugin-federation";
 
-function preconnectFederationRemotes(env: Record<string, string>): Plugin {
+function uniquePreserveOrder<T>(values: T[]): T[] {
+  const seen = new Set<T>()
+  const out: T[] = []
+  for (const v of values) {
+    if (seen.has(v)) continue
+    seen.add(v)
+    out.push(v)
+  }
+  return out
+}
+
+/** Early hints so cross-origin remoteEntry.js is fetched before the main bundle runs (reduces “Failed to fetch dynamically imported module”). */
+function federationRemoteHints(env: Record<string, string>): Plugin {
   const keys = [
-    'VITE_AUTH_REMOTE_URL',
-    'VITE_PATIENT_REMOTE_URL',
     'VITE_DASHBOARD_REMOTE_URL',
+    'VITE_AUTH_REMOTE_URL',
     'VITE_ANALYTICS_REMOTE_URL',
+    'VITE_PATIENT_REMOTE_URL',
   ]
-  const origins = [
-    ...new Set(
-      keys
-        .map((k) => env[k])
-        .filter(Boolean)
-        .map((url) => {
-          try {
-            return new URL(url as string).origin
-          } catch {
-            return null
-          }
-        })
-        .filter((o): o is string => o != null)
-    ),
-  ]
+  const remoteEntryUrls = uniquePreserveOrder(
+    keys.map((k) => env[k]).filter(Boolean) as string[]
+  )
+  const origins = uniquePreserveOrder(
+    remoteEntryUrls
+      .map((u) => {
+        try {
+          return new URL(u).origin
+        } catch {
+          return null
+        }
+      })
+      .filter((o): o is string => o != null)
+  )
 
   return {
-    name: 'preconnect-federation-remotes',
+    name: 'federation-remote-hints',
     transformIndexHtml(html) {
-      if (origins.length === 0) return html
-      const tags = origins
-        .map(
-          (o) => `    <link rel="preconnect" href="${o}" crossorigin />`
+      if (remoteEntryUrls.length === 0) return html
+      const lines: string[] = []
+      for (const o of origins) {
+        lines.push(`    <link rel="dns-prefetch" href="${o}" />`)
+      }
+      for (const o of origins) {
+        lines.push(`    <link rel="preconnect" href="${o}" crossorigin />`)
+      }
+      for (const u of remoteEntryUrls) {
+        lines.push(
+          `    <link rel="modulepreload" href="${u}" crossorigin />`
         )
-        .join('\n')
-      return html.replace('<head>', `<head>\n${tags}`)
+      }
+      return html.replace('<head>', `<head>\n${lines.join('\n')}`)
     },
   }
 }
@@ -45,7 +63,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
-      preconnectFederationRemotes(env),
+      federationRemoteHints(env),
       react(),
       tailwindcss(),
       federation({
