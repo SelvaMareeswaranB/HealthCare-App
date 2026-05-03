@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
             {
                 path: "login",
                 element: (
-                    <RouteShell loadingMessage="Loading sign in…">
+                    <RouteShell key="auth-login" loadingMessage="Loading sign in…">
                         <PublicRoute>
                             <RemoteLogin />
                         </PublicRoute>
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
             {
                 path: "analytics",
                 element: (
-                    <RouteShell loadingMessage="Loading analytics…">
+                    <RouteShell key="route-analytics" loadingMessage="Loading analytics…">
                         <RemoteAnalytics />
                     </RouteShell>
                 )
@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
             {
                 path: "home",
                 element: (
-                    <RouteShell loadingMessage="Loading dashboard…">
+                    <RouteShell key="route-home" loadingMessage="Loading dashboard…">
                         <RemoteDashboard />
                     </RouteShell>
                 )
@@ -79,7 +79,7 @@ export const router = createBrowserRouter([
             {
                 path: "patient-record",
                 element: (
-                    <RouteShell loadingMessage="Loading patient records…">
+                    <RouteShell key="route-patient-record" loadingMessage="Loading patient records…">
                         <RemotePatientModule />
                     </RouteShell>
                 )
