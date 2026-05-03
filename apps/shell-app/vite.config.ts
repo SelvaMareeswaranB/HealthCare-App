@@ -14,7 +14,16 @@ function uniquePreserveOrder<T>(values: T[]): T[] {
   return out
 }
 
-/** Early hints so cross-origin remoteEntry.js is fetched before the main bundle runs (reduces “Failed to fetch dynamically imported module”). */
+function remoteEntryOrigin(url: string): string | null {
+  if (url.startsWith('/')) return null
+  try {
+    return new URL(url).origin
+  } catch {
+    return null
+  }
+}
+
+/** Preload remote entries (same-origin /mf/* or absolute remote URLs). */
 function federationRemoteHints(env: Record<string, string>): Plugin {
   const keys = [
     'VITE_DASHBOARD_REMOTE_URL',
@@ -27,13 +36,7 @@ function federationRemoteHints(env: Record<string, string>): Plugin {
   )
   const origins = uniquePreserveOrder(
     remoteEntryUrls
-      .map((u) => {
-        try {
-          return new URL(u).origin
-        } catch {
-          return null
-        }
-      })
+      .map(remoteEntryOrigin)
       .filter((o): o is string => o != null)
   )
 
@@ -49,9 +52,11 @@ function federationRemoteHints(env: Record<string, string>): Plugin {
         lines.push(`    <link rel="preconnect" href="${o}" crossorigin />`)
       }
       for (const u of remoteEntryUrls) {
-        lines.push(
-          `    <link rel="modulepreload" href="${u}" crossorigin />`
-        )
+        if (u.startsWith('/')) {
+          lines.push(`    <link rel="modulepreload" href="${u}" />`)
+        } else {
+          lines.push(`    <link rel="modulepreload" href="${u}" crossorigin />`)
+        }
       }
       return html.replace('<head>', `<head>\n${lines.join('\n')}`)
     },
@@ -62,6 +67,30 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
+    server: {
+      proxy: {
+        '/mf/auth': {
+          target: 'http://localhost:5174',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/mf\/auth/, '/assets'),
+        },
+        '/mf/dashboard': {
+          target: 'http://localhost:5175',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/mf\/dashboard/, '/assets'),
+        },
+        '/mf/patient': {
+          target: 'http://localhost:5176',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/mf\/patient/, '/assets'),
+        },
+        '/mf/analytics': {
+          target: 'http://localhost:5177',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/mf\/analytics/, '/assets'),
+        },
+      },
+    },
     plugins: [
       federationRemoteHints(env),
       react(),

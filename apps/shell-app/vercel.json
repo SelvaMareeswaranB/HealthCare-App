@@ -1,6 +1,22 @@
 {
   "rewrites": [
     {
+      "source": "/mf/auth/:path*",
+      "destination": "https://health-care-app-auth-app.vercel.app/assets/:path*"
+    },
+    {
+      "source": "/mf/dashboard/:path*",
+      "destination": "https://health-care-app-dashboard-app.vercel.app/assets/:path*"
+    },
+    {
+      "source": "/mf/patient/:path*",
+      "destination": "https://health-care-app-patient-app.vercel.app/assets/:path*"
+    },
+    {
+      "source": "/mf/analytics/:path*",
+      "destination": "https://health-care-app-analytics-app.vercel.app/assets/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
