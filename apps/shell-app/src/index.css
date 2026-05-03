@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "@repo/theme/theme.css";
 
+/* Host must scan federated remotes so utilities exist before remote CSS injects (avoids unstyled flash / refresh without styles). */
+@source "../../../packages/*/src/**/*.{ts,tsx}";
+@source "../../dashboard-app/src/**/*.{js,ts,jsx,tsx}";
+@source "../../patient-app/src/**/*.{js,ts,jsx,tsx}";
+@source "../../analytics-app/src/**/*.{js,ts,jsx,tsx}";
+@source "../../auth-app/src/**/*.{js,ts,jsx,tsx}";
+
 *{
   box-sizing: border-box;
 }
