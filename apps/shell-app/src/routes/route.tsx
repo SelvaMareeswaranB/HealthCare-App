@@ -5,17 +5,20 @@ import AuthLayout from "../layout/AuthLayout";
 import { PublicRoute } from "./PublicRoute";
 import MainLayout from "../layout/MainLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { retryDynamicImport } from "../utils/retryDynamicImport";
 
-const RemoteLogin = React.lazy(() => import("authRemote/login"));
-const RemotePatientModule = React.lazy(
-    () => import("patientRemote/patientModule")
+const RemoteLogin = React.lazy(() =>
+  retryDynamicImport(() => import("authRemote/login"))
+);
+const RemotePatientModule = React.lazy(() =>
+  retryDynamicImport(() => import("patientRemote/patientModule"))
 );
 const RemoteDashboard = React.lazy(() =>
-    import("dashboardRemote/dashboardModule")
+  retryDynamicImport(() => import("dashboardRemote/dashboardModule"))
 );
 
 const RemoteAnalytics = React.lazy(() =>
-    import("analyticsRemote/analyticsModule")
+  retryDynamicImport(() => import("analyticsRemote/analyticsModule"))
 );
 
 

@@ -1,13 +1,51 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import federation from "@originjs/vite-plugin-federation";
+
+function preconnectFederationRemotes(env: Record<string, string>): Plugin {
+  const keys = [
+    'VITE_AUTH_REMOTE_URL',
+    'VITE_PATIENT_REMOTE_URL',
+    'VITE_DASHBOARD_REMOTE_URL',
+    'VITE_ANALYTICS_REMOTE_URL',
+  ]
+  const origins = [
+    ...new Set(
+      keys
+        .map((k) => env[k])
+        .filter(Boolean)
+        .map((url) => {
+          try {
+            return new URL(url as string).origin
+          } catch {
+            return null
+          }
+        })
+        .filter((o): o is string => o != null)
+    ),
+  ]
+
+  return {
+    name: 'preconnect-federation-remotes',
+    transformIndexHtml(html) {
+      if (origins.length === 0) return html
+      const tags = origins
+        .map(
+          (o) => `    <link rel="preconnect" href="${o}" crossorigin />`
+        )
+        .join('\n')
+      return html.replace('<head>', `<head>\n${tags}`)
+    },
+  }
+}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
     plugins: [
+      preconnectFederationRemotes(env),
       react(),
       tailwindcss(),
       federation({
