@@ -1,5 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import { RouteShell } from "../components/RouteShell";
 import AuthLayout from "../layout/AuthLayout";
 import { PublicRoute } from "./PublicRoute";
 import MainLayout from "../layout/MainLayout";
@@ -32,15 +33,12 @@ export const router = createBrowserRouter([
             {
                 path: "login",
                 element: (
-                    <Suspense fallback={<div>Loading Remote Login...</div>}>
-                        <PublicRoute><RemoteLogin />
+                    <RouteShell loadingMessage="Loading sign in…">
+                        <PublicRoute>
+                            <RemoteLogin />
                         </PublicRoute>
-
-
-                    </Suspense>
-
-                ),
-
+                    </RouteShell>
+                )
             },
             {
                 path: "signup",
@@ -62,25 +60,25 @@ export const router = createBrowserRouter([
             {
                 path: "analytics",
                 element: (
-                    <Suspense fallback={<div>Loading Analytics...</div>}>
+                    <RouteShell loadingMessage="Loading analytics…">
                         <RemoteAnalytics />
-                    </Suspense>
+                    </RouteShell>
                 )
             },
             {
                 path: "home",
                 element: (
-                    <Suspense fallback={<div>Loading Dashboard...</div>}>
+                    <RouteShell loadingMessage="Loading dashboard…">
                         <RemoteDashboard />
-                    </Suspense>
+                    </RouteShell>
                 )
             },
             {
                 path: "patient-record",
                 element: (
-                    <Suspense fallback={<div>Loading Patient Module...</div>}>
+                    <RouteShell loadingMessage="Loading patient records…">
                         <RemotePatientModule />
-                    </Suspense>
+                    </RouteShell>
                 )
             }
         ]
