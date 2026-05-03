@@ -1,3 +1,4 @@
+import "./index.css";
 import DashboardPage from "./features/dashboard/Pages/DashboardPage";
 
 const App = () => {

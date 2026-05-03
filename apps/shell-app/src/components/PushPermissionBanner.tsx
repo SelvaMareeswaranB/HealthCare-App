@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { requestPushPermissionAndToken } from "@repo/auth";
 
-/**
- * Browsers often ignore Notification.requestPermission() when it runs only from useEffect (no user gesture).
- * This banner asks once so push registration can complete after a click.
- */
+
 export function PushPermissionBanner() {
   const [show, setShow] = useState(false);
   const [busy, setBusy] = useState(false);
