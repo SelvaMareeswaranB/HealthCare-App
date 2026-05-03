@@ -81,10 +81,8 @@ The `packages/` folder contains reusable shared modules.
 ### `ui`
 Reusable components like:
 - Buttons
-- Cards
-- Tables
-- Modals
-
+- Input
+- 
 ### `theme`
 Shared design system and styling configuration.
 
@@ -135,6 +133,60 @@ Doctors/Admins Receive Alert
         ↓
 Emergency Action Initiated
 ```
+
+# 🌐 Application URLs
+
+## Main Shell Application
+
+- Shell App: https://health-care-app-shell-app.vercel.app/
+
+---
+
+# 🔗 Remote Micro Frontend URLs
+
+```env
+VITE_AUTH_REMOTE_URL=https://health-care-app-auth-app.vercel.app/assets/remoteEntry.js
+
+VITE_PATIENT_REMOTE_URL=https://health-care-app-patient-app.vercel.app/assets/remoteEntry.js
+
+VITE_DASHBOARD_REMOTE_URL=https://health-care-app-dashboard-app.vercel.app/assets/remoteEntry.js
+
+VITE_ANALYTICS_REMOTE_URL=https://health-care-app-analytics-app.vercel.app/assets/remoteEntry.js
+```
+
+---
+
+# 🏥 Individual Application URLs
+
+## Auth App
+https://health-care-app-auth-app.vercel.app/
+
+## Patient App
+https://health-care-app-patient-app.vercel.app/
+
+## Dashboard App
+https://health-care-app-dashboard-app.vercel.app/
+
+## Analytics App
+https://health-care-app-analytics-app.vercel.app/
+
+---
+
+# 🧩 Micro Frontend Integration
+
+The project uses **Module Federation** with a **Shell App** architecture.
+
+- `shell-app` acts as the host application.
+- Other apps are loaded dynamically as remote micro frontends.
+- Each app is independently deployed on Vercel.
+- Remote applications are connected using `remoteEntry.js`.
+
+This architecture enables:
+- Independent deployments
+- Scalable frontend development
+- Shared UI/components
+- Faster team collaboration
+- Better maintainability
 
 ---
 
